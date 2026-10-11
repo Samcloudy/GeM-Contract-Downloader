@@ -7,125 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0f1115;
-            --card: #171a21;
-            --border: #262a33;
-            --text: #e6e8ee;
-            --muted: #8b93a7;
-            --accent: #4f8cff;
-            --accent-2: #22c55e;
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-        }
-        .app {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 32px 20px 64px;
-        }
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-        .brand { display: flex; gap: 14px; align-items: center; }
-        .brand-mark {
-            width: 46px; height: 46px;
-            display: grid; place-items: center;
-            background: linear-gradient(135deg, var(--accent), #7c5cff);
-            border-radius: 12px;
-            color: white;
-        }
-        .brand-mark svg { width: 24px; height: 24px; }
-        .brand-text h1 { font-size: 20px; margin: 0 0 2px; font-weight: 600; }
-        .brand-text p { margin: 0; color: var(--muted); font-size: 13px; }
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 22px 24px;
-            margin-bottom: 20px;
-        }
-        .card h2 {
-            font-size: 15px;
-            margin: 0 0 14px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-        }
-        .pill {
-            display: inline-block;
-            font-size: 11px;
-            padding: 3px 9px;
-            border-radius: 999px;
-            background: rgba(79,140,255,0.15);
-            color: var(--accent);
-            margin-bottom: 14px;
-            font-weight: 500;
-        }
-        pre {
-            background: #0b0d12;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px 16px;
-            overflow-x: auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: #c9d1e4;
-            margin: 12px 0 0;
-        }
-        code { font-family: 'JetBrains Mono', monospace; }
-        p { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
-        a.btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--accent);
-            color: white;
-            text-decoration: none;
-            padding: 10px 16px;
-            border-radius: 9px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 6px;
-        }
-        a.btn:hover { background: #3d78e0; }
-        .features { display: grid; gap: 10px; margin-top: 8px; }
-        .feature {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            font-size: 14px;
-        }
-        .feature .dot {
-            color: var(--accent-2);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-        .app-footer {
-            text-align: center;
-            color: var(--muted);
-            font-size: 12px;
-            margin-top: 36px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-    </style>
+    <link rel="stylesheet" href="/static/style.css?v=5">
 </head>
 <body>
+
 <div class="app">
 
+    <!-- ─── Header ─────────────────────────────── -->
     <header class="app-header">
         <div class="brand">
             <div class="brand-mark" aria-hidden="true">
@@ -141,32 +29,124 @@
                 <p>Bulk-download Government e-Marketplace contract PDFs</p>
             </div>
         </div>
+        <div class="header-meta">
+            <span class="status-dot" id="headerDot"></span>
+            <span id="headerState">Idle</span>
+        </div>
     </header>
 
-    <section class="card">
-        <span class="pill">Python Tool · Local-Only</span>
-        <h2>What this does</h2>
-        <p>A Python-based automation tool that downloads GeM contract documents in bulk — either by category + date range, or by a list of contract numbers. It runs entirely on your own machine; no data leaves your computer.</p>
-        <div class="features">
-            <div class="feature"><span class="dot">✓</span><span>Two modes: search by category or upload a contract list</span></div>
-            <div class="feature"><span class="dot">✓</span><span>Live progress log and file listing in the browser</span></div>
-            <div class="feature"><span class="dot">✓</span><span>Automatic CAPTCHA handling</span></div>
-            <div class="feature"><span class="dot">✓</span><span>Runs on 127.0.0.1 — completely private</span></div>
+    <!-- ─── Tabs ───────────────────────────────── -->
+    <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="tab-category" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            By Category
+        </button>
+        <button class="tab" data-tab="tab-contracts" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+            By Contract Number
+        </button>
+    </nav>
+
+    <!-- ─── Tab 1: Category ───────────────────── -->
+    <section id="tab-category" class="tab-panel active">
+        <div class="card">
+            <div class="card-head">
+                <h2>Search filters</h2>
+                <span class="pill">Mode 1</span>
+            </div>
+            <div class="grid">
+                <div class="field span-2">
+                    <label for="category">Category</label>
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input id="category" list="catlist" placeholder="Start typing to search categories…" autocomplete="off">
+                    </div>
+                    <datalist id="catlist"></datalist>
+                    <small id="catstatus">Loading categories from GeM…</small>
+                </div>
+
+                <div class="field">
+                    <label for="from_date">From date</label>
+                    <input id="from_date" type="date" value="2026-09-01">
+                </div>
+
+                <div class="field">
+                    <label for="to_date">To date</label>
+                    <input id="to_date" type="date" value="2026-09-05">
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="runBtnCategory" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Run Scraper
+                </button>
+                <div id="runstatusCategory" class="runstatus"></div>
+            </div>
         </div>
     </section>
 
+    <!-- ─── Tab 2: Contract numbers ───────────── -->
+    <section id="tab-contracts" class="tab-panel">
+        <div class="card">
+            <div class="card-head">
+                <h2>Upload contract list</h2>
+                <span class="pill">Mode 2</span>
+            </div>
+
+            <div class="field">
+                <label for="xlfile">Excel / CSV / TXT file</label>
+                <label for="xlfile" class="dropzone" id="dropzone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <span class="dropzone-title">Click to choose a file</span>
+                    <span class="dropzone-hint">.xlsx, .xls, .csv or .txt — one contract number per row</span>
+                    <input id="xlfile" type="file" accept=".xlsx,.xls,.csv,.txt" hidden>
+                </label>
+                <small id="fileInfo">No file selected</small>
+            </div>
+
+            <div class="example">
+                <span class="example-label">Format example</span>
+                <code>GEMC-511687728969701</code>
+                <code>GEMC-511687755678653-28112024</code>
+            </div>
+
+            <div class="actions">
+                <button id="runBtnContracts" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Upload &amp; Run
+                </button>
+                <div id="runstatusContracts" class="runstatus"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Progress ──────────────────────────── -->
     <section class="card">
-        <h2>Run it locally</h2>
-        <p>GitHub Pages can't run Python, so this page is just a description. To use the actual tool, clone the repo and run it:</p>
-        <pre>git clone https://github.com/Samcloudy/GeM-Contract-Downloader.git
-cd GeM-Contract-Downloader
-pip install -r requirements.txt
-python app.py</pre>
-        <p style="margin-top:14px;">Then open <code>http://127.0.0.1:5000</code> in your browser.</p>
-        <a class="btn" href="https://github.com/Samcloudy/GeM-Contract-Downloader">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.1-.75.41-1.27.74-1.56-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.66.42.36.79 1.08.79 2.17v3.22c0 .31.21.68.8.56A10.52 10.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
-            View on GitHub
-        </a>
+        <div class="card-head">
+            <h2>Progress</h2>
+            <div class="progress-meta">
+                <span id="progress" class="badge">0 / 0</span>
+                <div class="progress-bar"><div id="progressBar" class="progress-fill"></div></div>
+            </div>
+        </div>
+        <pre id="log" class="log">Waiting to start…</pre>
+    </section>
+
+    <!-- ─── Files ─────────────────────────────── -->
+    <section class="card">
+        <div class="card-head">
+            <h2>Downloaded files</h2>
+            <button id="refreshFiles" class="btn btn-ghost">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Refresh
+            </button>
+        </div>
+        <ul id="files" class="file-list"></ul>
     </section>
 
     <footer class="app-footer">
@@ -174,5 +154,226 @@ python app.py</pre>
     </footer>
 
 </div>
+
+<script>
+/* ── Tab switching (unchanged behavior) ─────────────── */
+document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+        document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(x => x.classList.remove("active"));
+        t.classList.add("active");
+        document.getElementById(t.dataset.tab).classList.add("active");
+    });
+});
+
+/* ── Helpers ─────────────────────────────────────────── */
+function isoToDmy(iso) {
+    const [y, m, d] = iso.split("-");
+    return d + "-" + m + "-" + y;
+}
+function setStatus(elId, text, cls) {
+    const el = document.getElementById(elId);
+    el.textContent = text || "";
+    el.className = "runstatus" + (cls ? " " + cls : "");
+}
+function updateHeaderState(state) {
+    const dot = document.getElementById("headerDot");
+    const label = document.getElementById("headerState");
+    if (state.error) {
+        dot.className = "status-dot status-error";
+        label.textContent = "Error";
+    } else if (state.running) {
+        dot.className = "status-dot status-running";
+        label.textContent = "Running";
+    } else if (state.done) {
+        dot.className = "status-dot status-done";
+        label.textContent = "Completed";
+    } else {
+        dot.className = "status-dot";
+        label.textContent = "Idle";
+    }
+}
+
+/* ── File input info ─────────────────────────────────── */
+const xlfileEl = document.getElementById("xlfile");
+xlfileEl.addEventListener("change", function () {
+    const info = document.getElementById("fileInfo");
+    if (xlfileEl.files.length) {
+        const f = xlfileEl.files[0];
+        info.textContent = f.name + " (" + (f.size / 1024).toFixed(1) + " KB)";
+        info.classList.add("ok");
+    } else {
+        info.textContent = "No file selected";
+        info.classList.remove("ok");
+    }
+});
+
+/* Drag & drop on the dropzone label */
+const dropzone = document.getElementById("dropzone");
+["dragenter", "dragover"].forEach(ev => {
+    dropzone.addEventListener(ev, e => {
+        e.preventDefault();
+        dropzone.classList.add("dragging");
+    });
+});
+["dragleave", "drop"].forEach(ev => {
+    dropzone.addEventListener(ev, e => {
+        e.preventDefault();
+        dropzone.classList.remove("dragging");
+    });
+});
+dropzone.addEventListener("drop", e => {
+    if (e.dataTransfer.files.length) {
+        xlfileEl.files = e.dataTransfer.files;
+        xlfileEl.dispatchEvent(new Event("change"));
+    }
+});
+
+/* ── Categories (Mode 1) ─────────────────────────────── */
+async function loadCategories() {
+    const list = document.getElementById("catlist");
+    const status = document.getElementById("catstatus");
+    status.textContent = "Loading categories from GeM…";
+    try {
+        const res = await fetch("/categories");
+        const data = await res.json();
+        list.innerHTML = "";
+        if (Array.isArray(data) && data.length) {
+            data.forEach(c => {
+                const o = document.createElement("option");
+                o.value = c;
+                list.appendChild(o);
+            });
+            status.textContent = data.length + " categories ready. Type to filter.";
+        } else {
+            status.textContent = "Could not load categories: " + (data.error || "unknown");
+        }
+    } catch (e) {
+        status.textContent = "Failed to reach server: " + e.message;
+    }
+}
+
+/* ── Start Mode 1 ────────────────────────────────────── */
+async function startCategory() {
+    const category = document.getElementById("category").value.trim();
+    const fromIso = document.getElementById("from_date").value;
+    const toIso = document.getElementById("to_date").value;
+    if (!category) return alert("Please type or select a category");
+    if (!fromIso || !toIso) return alert("Please pick both dates");
+
+    document.getElementById("runBtnCategory").disabled = true;
+    setStatus("runstatusCategory", "Starting…");
+    const res = await fetch("/start_category", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            category: category,
+            from_date: isoToDmy(fromIso),
+            to_date: isoToDmy(toIso)
+        })
+    });
+    const data = await res.json();
+    if (data.error) {
+        alert(data.error);
+        document.getElementById("runBtnCategory").disabled = false;
+        setStatus("runstatusCategory", "");
+    } else {
+        setStatus("runstatusCategory", "Running…");
+        pollStatus();
+    }
+}
+
+/* ── Start Mode 2 ────────────────────────────────────── */
+async function startContracts() {
+    if (!xlfileEl.files.length) return alert("Please choose a file");
+
+    const fd = new FormData();
+    fd.append("file", xlfileEl.files[0]);
+
+    document.getElementById("runBtnContracts").disabled = true;
+    setStatus("runstatusContracts", "Uploading…");
+
+    try {
+        const res = await fetch("/upload", {method: "POST", body: fd});
+        const data = await res.json();
+        if (data.error) {
+            alert(data.error);
+            document.getElementById("runBtnContracts").disabled = false;
+            setStatus("runstatusContracts", "");
+            return;
+        }
+        setStatus("runstatusContracts", "Loaded " + data.count + " number(s). Running…");
+        pollStatus();
+    } catch (e) {
+        alert("Upload failed: " + e.message);
+        document.getElementById("runBtnContracts").disabled = false;
+        setStatus("runstatusContracts", "");
+    }
+}
+
+/* ── Polling ─────────────────────────────────────────── */
+async function pollStatus() {
+    const res = await fetch("/status");
+    const s = await res.json();
+
+    const logBox = document.getElementById("log");
+    logBox.textContent = s.log.length ? s.log.join("\n") : "Waiting for first step…";
+    logBox.scrollTop = logBox.scrollHeight;
+
+    document.getElementById("progress").textContent = s.downloaded + " / " + s.total;
+    const pct = s.total > 0 ? Math.min(100, (s.downloaded / s.total) * 100) : 0;
+    document.getElementById("progressBar").style.width = pct + "%";
+
+    updateHeaderState(s);
+
+    if (s.error) {
+        setStatus("runstatusCategory", "Error: " + s.error, "error");
+        setStatus("runstatusContracts", "Error: " + s.error, "error");
+    } else if (s.done) {
+        setStatus("runstatusCategory", "Finished!", "success");
+        setStatus("runstatusContracts", "Finished!", "success");
+    }
+
+    if (s.running) {
+        setTimeout(pollStatus, 1500);
+    } else {
+        document.getElementById("runBtnCategory").disabled = false;
+        document.getElementById("runBtnContracts").disabled = false;
+        loadFiles();
+    }
+}
+
+/* ── Files list ──────────────────────────────────────── */
+async function loadFiles() {
+    const res = await fetch("/files");
+    const items = await res.json();
+    const ul = document.getElementById("files");
+    ul.innerHTML = "";
+    if (Array.isArray(items) && items.length) {
+        items.forEach(f => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = "/download/" + encodeURIComponent(f.name);
+            a.textContent = f.name;
+            const size = document.createElement("span");
+            size.className = "size";
+            size.textContent = (f.size / 1024).toFixed(1) + " KB";
+            li.appendChild(a);
+            li.appendChild(size);
+            ul.appendChild(li);
+        });
+    } else {
+        ul.innerHTML = '<li class="empty">No files yet.</li>';
+    }
+}
+
+/* ── Wiring ──────────────────────────────────────────── */
+document.getElementById("runBtnCategory").addEventListener("click", startCategory);
+document.getElementById("runBtnContracts").addEventListener("click", startContracts);
+document.getElementById("refreshFiles").addEventListener("click", loadFiles);
+
+loadCategories();
+loadFiles();
+</script>
 </body>
 </html>
